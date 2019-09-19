@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;padding: 0;
+            background-image: url("1.jpg");
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+
+    </style>
+
+    <script>
+
+       window.onload=function () {
+           var start=document.createElement("input")
+           start.type="button"
+           start.value="开始游戏"
+           start.style.cssText="position:absolute;left:550px;top:450px;font-size:40px"
+           document.body.appendChild(start)
+
+           start.onclick=function () {
+
+
+        var zhongzi=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+      /*  console.log(zhongzi[Math.floor(Math.random()*zhongzi.length)])*/
+        function create() {
+            //在控制台记录
+            var obj={}
+            //字母随机
+            var randletter=zhongzi[Math.floor(Math.random()*zhongzi.length)]
+           //大小随机
+            var randsize=parseInt(30+20*Math.random())
+            //位置随机 屏幕的宽度
+            var randleft=(document.documentElement.clientWidth-50)*Math.random()
+            var randtop=parseInt(20+30*Math.random())
+            //颜色也随机
+            var randcolor = "rgb("+parseInt(255*Math.random())+","+parseInt(255*Math.random())+","+parseInt(255*Math.random())+")"
+
+            //动态创建
+            var div = document.createElement("div")
+            div.innerHTML =randletter
+            div.style.cssText="width:50px;height:50px;position:absolute;left:"+randleft+"px;top:"+randtop+"px;font-size:"+randsize+"px;color:"+randcolor+";background:url(3.jpg);background-size:100% 100%;line-height: 120px;text-align: center;"
+            document.body.appendChild(div)
+
+            obj.letter=randletter
+            obj.ele=div
+            obj.size=randsize
+            obj.left=randleft
+            obj.top=randtop
+            obj.color=randcolor
+            obj.speed=parseInt(5+5*Math.random())
+            return obj;
+
+        }
+       /* create()
+        //记录
+        console.log(create())*/
+        //循环5次
+        var randArr=[]
+         //一次出2个字母
+        for(var i=0;i<3;i++){
+            randArr.push(create())
+        }
+
+        //定时器
+
+               //得分
+               var score1 = document.createElement("score")
+               score1.innerHTML = "score:"
+               score1.style.cssText = "position: absolute;left:50px;top:20px;font-size:30px"
+               document.body.appendChild(score1)
+               //分数
+               var score2 = document.createElement("score")
+               score2.innerHTML = 0
+               score2.style.cssText = "position: absolute;left:140px;top:22px;font-size:30px"
+               document.body.appendChild(score2)
+
+               var count1 = 0
+
+
+       /* var speed=5*/
+        setInterval(function () {
+
+            for(var i=0;i<randArr.length;i++){
+
+                randArr[i].ele.style.top=randArr[i].ele.offsetTop+randArr[i].speed+"px"
+
+                if(randArr[i].ele.offsetTop>document.documentElement.clientHeight-randArr[i].ele.offsetHeight-80){
+
+
+                    count1++
+                    if (count1>10) {
+                        alert("Game over!!!")
+                        count1=0
+                    } else {
+                        document.body.removeChild(randArr[i].ele)
+                        randArr.splice(i,1)
+                        randArr.push(create())
+                    }
+                }
+            }
+
+        },40)
+
+        //键盘
+               //记录得分
+               var count2=0
+        document.onkeydown=function (e) {
+            var code=e.key;
+            //下面匹配
+            for(var i=0;i<randArr.length;i++){
+                if(randArr[i].letter==code){
+                    count2++;
+                    score2.innerHTML = count2
+                    document.body.removeChild(randArr[i].ele)
+                    randArr.splice(i,1)
+                    randArr.push(create())
+
+
+                }
+            }
+        }
+           }
+
+
+
+       }
+
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
