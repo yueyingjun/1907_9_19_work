@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>magnifier</title>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            width:100%;
+            height:100%;
+            background:radial-gradient(white,black);;
+        }
+        .inner{
+            width:100%;
+            height:100px;
+            position:relative;
+        }
+        .grade{
+            width:100px;
+            height:100px;
+            border-radius:50%;
+            background:yellow;
+            font-size:30px;
+            line-height:100px;
+            text-align:center;
+            position:absolute;
+            left:0;
+            top:0;
+        }
+        .center{
+            width:800px;
+            height:80px;
+            background:red;
+            border-radius:20% 20%;
+            font-size:20px;
+            line-height:100px;
+            text-align:center;
+            position:absolute;
+            left:300px;
+            top:10px;
+            animation:donghua 3s linear infinite alternate backwards 1s;
+        }
+        @keyframes donghua{
+            0%{left:300px;top:10px;}
+            50%{left:350px;top:10px;}
+            100%{left:400px;top:10px;}
+        }
+        .center-n{
+            font-size:30px;
+            color:blue;
+        }
+        .lite{
+            width:100px;
+            height:100px;
+            background:red;
+            border-radius:50%;
+            font-size:30px;
+            line-height:100px;
+            text-align:center;
+            position:absolute;
+            right:0;
+            top:0;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+            var num = 1;
+            alert("开始游戏");
+            var grade = document.querySelector(".grade");
+            var lite = document.querySelector(".lite");
+            var guan = document.querySelector(".center-n");
+            var arr=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q"];
+            var Array=[];
+            var randSpeed = 2;
+            var flag = true;
+            function create(){
+                var div = document.createElement("div");
+                var randLetter = arr[Math.floor(Math.random()*arr.length)];
+                var randSize = parseInt(30+20*Math.random());
+                var randWidth = 60;
+                var randHeight = 60;
+                var randLeft = (document.documentElement.clientWidth-50)*Math.random();
+                var randTop = 100+parseInt(20+30*Math.random());
+                var randColor = "rgb("+parseInt(255*Math.random())+","+parseInt(255*Math.random())+","+parseInt(255*Math.random())+")";
+                var backColor = "rgb("+parseInt(255*Math.random())+","+parseInt(255*Math.random())+","+parseInt(255*Math.random())+")";
+
+                div.style.cssText="border-radius:50%;text-align:center;background:"+backColor+";font-size:"+randSize+"px;position:absolute;left:"+randLeft+"px;top:"+randTop+"px;width:"+randWidth+"px;height:"+randHeight+"px;color:"+randColor+"";
+                div.innerHTML=randLetter;
+                document.body.appendChild(div);
+
+                var obj={};
+                obj.ele = div;
+                obj.letter=randLetter;
+                obj.width=randWidth;
+                obj.height=randHeight;
+                obj.size = randSize;
+                obj.left = randLeft;
+                obj.top = randTop;
+                obj.color = randColor;
+                obj.background = backColor;
+                obj.speed = randSpeed;
+                return obj;
+            }
+            for(var i=0;i<5;i++){
+                Array.push(create());
+            }
+            function fun(){
+                if(flag){
+                    for(var i=0;i<Array.length;i++){
+                        Array[i].ele.style.top=Array[i].ele.offsetTop + Array[i].speed+"px"
+                        if(Array[i].ele.offsetTop>document.documentElement.clientHeight){
+                            document.body.removeChild(Array[i].ele)
+                            Array.splice(i,1)
+                            Array.push(create())
+                            lite.innerHTML--;
+                            if(lite.innerHTML==0){
+                                alert("游戏结束！！！");
+                                flag = false;
+                            }
+                        }
+                    }
+                }
+            }
+                var i = setInterval(fun,40);
+            document.onkeydown=function (e) {
+                var code=e.key;
+                for(var i=0;i<Array.length;i++){
+                    if(Array[i].letter==code){
+                        document.body.removeChild(Array[i].ele)
+                        Array.splice(i,1)
+                        Array.push(create())
+                        grade.innerHTML++;
+                        if(grade.innerHTML==5){
+                            num++;
+                            grade.innerHTML=0;
+                            guan.innerHTML++;
+                            alert("恭喜通关！！！");
+                            randSpeed += 2;
+                            i = setInterval(fun,40);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="inner">
+        <div class="grade">0</div>
+        <div class="center">第&nbsp;<span class="center-n">1</span>&nbsp;关</div>
+        <div class="lite">5</div>
+    </div>
+</body>
+</html>
