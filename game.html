@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        window.onload=function () {
+            var zhongzi = ["a","b","c","d","e","f","j","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+
+            var bt1 = document.createElement("button");
+            bt1.style.cssText="width:100px;height:50px;background:orange;position:absolute;color:red;font-size:30px;"
+            bt1.innerHTML="3";
+            //play.onclick=function () {
+                function create(){
+                    var obj={};
+
+                    var div = document.createElement("div");
+
+                    var randLetter = zhongzi[Math.floor(Math.random()*zhongzi.length)]
+                    var randSize = parseInt(30+20*Math.random())
+                    var randLeft = (document.documentElement.clientWidth-100)*Math.random()
+                    var randTop = parseInt(30+30*Math.random())
+                    var randColor = "rgb("+parseInt(255*Math.random())+","+parseInt(255*Math.random())+","+parseInt(255*Math.random())+")"
+                    var randspeed =parseInt(3+5*Math.random())
+                    div.style.cssText="width:100px;height:100px;position:absolute;background:url('img/dd.png') no-repeat center;background-size:100px 100px;line-height:80px;text-align:center;left:"+randLeft+"px;top"+randTop+"px;font-size:"+randSize+"px;color:"+randColor+"";
+
+                    document.body.appendChild(div);
+                    div.innerHTML=randLetter;
+
+                    document.body.appendChild(bt1)
+                    obj.letter=randLetter;
+                    obj.size=randSize;
+                    obj.left=randLeft;
+                    obj.top=randTop;
+                    obj.color=randColor;
+                    obj.speed=randspeed;
+                    obj.ele=div
+                    return obj;
+                }
+
+
+
+                var randArr=[]
+                for(var i=0;i<5;i++){
+                    randArr.push(create())
+                }
+                setInterval(function () {
+                    var count = 0;
+                    for(var i=0;i<randArr.length;i++){
+                        randArr[i].ele.style.top=randArr[i].ele.offsetTop+randArr[i].speed+"px";
+                        if(randArr[i].ele.offsetTop>document.documentElement.clientHeight){
+                            document.body.removeChild(randArr[i].ele)
+                            randArr.splice(i,1);
+                            randArr.push(create())
+                            count++;
+                            if(count>0&&count<3){
+                                bt1.innerHTML--;
+                            }
+                            if(bt1.innerHTML<1){
+                                bt1.innerHTML=0
+                                alert("游戏结束！")
+
+                            }
+                        }
+                    }
+
+                },40)
+
+
+            //}
+            document.onkeydown=function (e) {
+                var code = e.key;
+                for(var i=0;i<randArr.length;i++){
+                    if(randArr[i].letter==code){
+                        document.body.removeChild(randArr[i].ele)
+                        randArr.splice(i,1)
+                        randArr.push(create())
+
+                    }
+
+                }
+            }
+                //create()
+
+        }
+    </script>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            height: 722px;
+            background: url("img/back.jpg")no-repeat center center;
+            background-size: 100% 100%;
+
+        }
+        .button1{
+            width: 80px;
+            height: 30px;
+        }
+        .button2{
+            width: 80px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
