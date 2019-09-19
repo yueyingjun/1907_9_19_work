@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>打字游戏</title>
+    <link rel="stylesheet" href="">
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            /*overflow: hidden;*/
+            background: url("http://pic.3h3.com/up/2014-4/20144411110853055791.jpg") no-repeat center;
+        }
+        .first{
+            width: 200px;
+            height: 200px;
+            margin: auto;
+            /*border: 1px solid red;*/
+            position: relative;
+        }
+        .start{
+            width: 100px;
+            height: 50px;
+            font-size: 20px;
+            background: #EAA90B;
+            position: absolute;
+            left: 50px;
+            top: 50px;
+
+        }
+        .two{
+            width: 290px;
+            height: 50px;
+            position: absolute;
+            left: 50px;
+            top:530px;
+            visibility: hidden;
+        }
+        .timeout{
+            width: 50px;
+            height: 30px;
+            font-size: 15px;
+            background: #EAA90B;
+        }
+        .end{
+            width: 50px;
+            height: 30px;
+            font-size: 15px;
+            background: #EAA90B;
+        }
+        .score{
+            width: 100px;
+            height: 50px;
+            position: absolute;
+            left: 1050px;
+            top: 530px;
+            font-size: 26px;
+            color: #2691FD;
+            visibility: hidden;
+            float: left;
+        }
+        .name{
+            font-size: 26px;
+            color: #669900;
+            position: absolute;
+            left: 980px;
+            top: 530px;
+            visibility: hidden;
+            float: left;
+            /*width: 50px;*/
+        }
+        /*.out{*/
+            /*width: 200px;*/
+            /*height: 100px;*/
+            /*line-height: 100px;*/
+            /*font-size: 20px;*/
+            /*text-align: center;*/
+            /*position: absolute;*/
+            /*left: 530px;*/
+            /*top:150px;*/
+            /*background: #EAA90B;*/
+            /*border-radius: 20px;*/
+            /*visibility: hidden;*/
+        /*}*/
+
+    </style>
+
+    <script>
+        window.onload=function () {
+            var start = document.querySelector(".start")
+            var timeout = document.querySelector(".timeout")
+            var end = document.querySelector(".end")
+            var two=document.querySelector(".two")
+            var score=document.querySelector(".score")
+            var name=document.querySelector(".name")
+            // var out=document.querySelector(".out");
+
+            start.onclick=function () {
+                setTimeout(game,2000)
+                start.style.display="none";
+                two.style.visibility="visible"
+                score.style.visibility="visible"
+                name.style.visibility="visible"
+            }
+
+
+            // game()
+
+            function game() {
+                function create() {
+                    var obj = {};
+                    // var letter=String.fromCharCode(parseInt(Math.random()*26+97));
+                    var randLetter = String.fromCharCode(parseInt(Math.random() * 26 + 97));
+                    console.log(randLetter)
+                    var randSize = parseInt(Math.random() * 25 + 20);
+                    var randLeft = parseInt(Math.random() * document.documentElement.clientWidth)
+                    var randTop = parseInt(Math.random() * 15);
+                    var randrgb = "rgb(" + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + ")";
+                    var randspeed = parseInt(Math.random() * 2 + 7);
+
+                    var div = document.createElement("div");
+                    div.innerHTML = randLetter;
+                    div.style.cssText = "font-size:" + randSize + "px;position:absolute;left:" + randLeft + "px;top:" + randTop + "px;color:" + randrgb + ""
+                    document.body.appendChild(div);
+
+                    obj.ele = div;
+                    obj.cont = randLetter;
+                    obj.size = randSize;
+                    obj.color = randrgb;
+                    obj.left = randLeft;
+                    obj.top = randTop;
+                    obj.speed = randspeed;
+                    return obj;
+                }
+
+                var element = [];
+                for (var i = 0; i < 3; i++) {
+                    element.push(create());
+                }
+                function move() {
+                    for (var i = 0; i < element.length; i++) {
+                        element[i].ele.style.top = element[i].speed + element[i].ele.offsetTop + "px"
+                        if (element[i].ele.offsetTop > document.documentElement.clientHeight) {
+                            document.body.removeChild(element[i].ele)
+                            element.splice(i, 1);
+                            element.push(create());
+                        }
+                    }
+                }
+                var count=0;
+                document.onkeydown = function (e) {
+                    var code = e.key;
+                    for (var i = 0; i < element.length; i++) {
+                        if (element[i].cont == code) {
+                            count += 10;
+                            score.innerHTML = count;
+                            document.body.removeChild(element[i].ele)
+                            element.splice(i, 1);
+                            element.push(create())
+                        }
+                    }
+                }
+
+                var t=setInterval(move,40)
+
+                timeout.onclick=function(){
+                    clearInterval(t);
+                }
+                end.onclick=function(){
+                    setInterval(move,40)
+
+                }
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+    <div class="first">
+        <input type="button" value="开始游戏" class="start">
+    </div>
+    <div class="two">
+        <input type="button" value="暂停" class="timeout">
+        <input type="button" value="继续" class="end">
+    </div>
+    <!--<div class="out">恭喜你，out了！</div>-->
+    <div class="name">分数：</div>
+    <div class="score"></div>
+
+</body>
+</html>
