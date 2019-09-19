@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0%;
+            margin: 0%;
+            height:770px;
+        }
+    </style>
+    <script>
+        /*1、如何动态操作html的元素 
+        document.createElement  创建一个元素
+        document.body.appendChild()  在body里面追加一个div 父元素.appendChild(子元素)
+        removeChild 删除一个元素   this.parentNode 父元素
+        cloneNode(true false)  克隆
+        父元素.document.querySelector().replaceChild(新的元素，要替换的元素)
+
+        2、数学方法
+        (1)随机数  random 
+        (2) 取整 parseInt()  toFixed()确定保留到几位小数  Math.floor() 向下去整   Math.ceil() 向上取整
+        3、Math.PI
+        4、Math.sin()  角度*PI/180  角度转弧度
+        5、Math.cos()
+        */
+       window.onload=function(){
+            var start=document.querySelector(".start")
+            var jfq1=document.querySelector(".jfq1")
+            var jfq2=document.querySelector(".jfq2")
+            start.onmousedown=function(){
+                start.style.display="none"
+           var zhongzi=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+           function move(){
+                var obj={}
+                var randContent =zhongzi[Math.floor(Math.random()*zhongzi.length)]
+                var randSize =parseInt(Math.random()*30+40)
+                var randLeft=parseInt(Math.random()*(document.documentElement.clientWidth-50))
+                var randTop=parseInt(Math.random()*30+20)
+                var randColor="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+");"
+                var randSpeed=parseInt(Math.random()*10+5)
+                 var div = document.createElement("div")
+                div.style.cssText="font-size:"+randSize+"px;left:"+randLeft+"px;top："+randTop+"px;color:"+randColor+";position: absolute;"
+                div.innerHTML=randContent;
+                document.body.appendChild(div)
+                obj.ele=div
+                obj.size=randSize
+                obj.left=randLeft
+                obj.top=randTop
+                obj.color=randColor
+                obj.speed=randSpeed
+                obj.hzh=randContent
+                return obj  
+           }
+           var rand=[]
+            for (var i=0;i<5;i++) {
+
+                rand.push(move())
+            }
+            console.log(rand)
+            var num1=0
+            var t=setInterval(function(){
+                for(let i=0;i<rand.length;i++){
+                    rand[i].ele.style.top=rand[i].ele.offsetTop+rand[i].speed+"px"
+                    if(rand[i].ele.offsetTop>document.documentElement.clientHeight){
+                        document.body.removeChild(rand[i].ele)
+                        rand.splice(i,1)
+                        num1++
+                        rand.push(move())
+                       console.log(num1)
+                       jfq2.innerHTML="还剩"+(10-num1)+"次机会"
+                       if(num1>=10){
+                           alert("游戏失败！")
+                           clearInterval(t)
+                       }
+                    }  
+                    
+                }
+            },100)
+            var num2=0
+            document.onkeydown=function(e){
+                var gc=e.key
+                for(var i=0;i<rand.length;i++){
+                    if(gc==rand[i].hzh){
+                        document.body.removeChild(rand[i].ele) 
+                        rand.splice(i,1)
+                        num2++
+                        console.log(num2)
+                        jfq1.innerHTML="得到"+num2+"分"
+                        rand.push(move())
+                    }
+
+                }
+               
+            }
+        }
+       }
+    </script>
+</head>
+<body>
+<button class="start" style="height:40px;width:100px  ">准备好了吗？go</button> 
+<div class="jfq1" style="height: 200px; width:200px;border: 1px solid black;margin: auto;font-size: 30px;float: left;"></div> 
+<div class="jfq2" style="height: 200px; width:200px;border: 1px solid black;margin: auto;font-size: 30px;margin-left: 50px;float: left;"></div> 
+</body>
+</html>
