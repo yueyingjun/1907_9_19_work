@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>打字游戏</title>
+    <style>
+        body{
+            background: #f3f3f3;
+            margin: 0;
+            padding: 0;
+        }
+        .true{
+            width: 50px;
+            height: 50px;
+            background: rgba(255,0,0,0.6);
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            border-radius: 50%;
+            color: #000;
+            font-size: 30px;
+        }
+        .false{
+            width: 50px;
+            height: 50px;
+            background: rgba(0,0,0,0.6);
+            position: absolute;
+            top: 100px;
+            right: 100px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 30px;
+        }
+        .true span{
+            width: 30px;
+            height: 30px;
+            float: left;
+            margin-left: 13px;
+            margin-top: 6px;
+        }
+        .false span{
+            width: 30px;
+            height: 30px;
+            float: left;
+            margin-left: 17px;
+            margin-top: 6px;
+        }
+        button{
+
+            height: 30px;
+            width: 100px;
+            position: absolute;
+            left: 625px;
+            top: 112px;
+            display: block;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+            var button = document.querySelector("button");
+            button.onclick=function(){
+                var content=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+
+                function create(){
+                    var obj={}
+                    var randletter = content[Math.floor(Math.random()*content.length)];
+                    var randTop = parseInt(20+30*Math.random());
+                    var randLeft =  parseInt(Math.random()*(document.documentElement.clientWidth-50));
+                    var randcolor = "rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")"
+                    var randspeed = parseInt(3+5*Math.random())
+                    var randsize = parseInt(30+30*Math.random())
+
+                    var div = document.createElement("div")
+                    div.style.cssText="font-size:"+randsize+"px;position:absolute;left:"+randLeft+"px;top:"+randTop+"px;color:"+randcolor+";"
+                    div.innerHTML=randletter;
+                    document.body.appendChild(div);
+
+                    obj.ele = div
+                    obj.size=randsize
+                    obj.left = randLeft
+                    obj.top=randTop
+                    obj.color = randcolor
+                    obj.letter = randletter
+                    obj.speed = randspeed
+
+                    return obj
+                }
+                var objarr=[]
+                for (var i = 0;i<5;i++){
+                    objarr.push(create())
+                }
+
+                setInterval(function(){
+                    for(var i = 0;i<objarr.length;i++){
+                        objarr[i].ele.style.top=objarr[i].ele.offsetTop+objarr[i].speed+"px";
+
+                        if(objarr[i].ele.offsetTop>=document.documentElement.clientHeight-objarr[i].ele.offsetHeight){
+                            var falsenum=document.querySelector(".false span")
+                            var num =falsenum.innerHTML;
+                            document.body.removeChild(objarr[i].ele)
+                            objarr.splice(i,1)
+                            objarr.push(create())
+                            num--
+                            falsenum.innerHTML=num
+                            if(falsenum.innerHTML<=0){
+                                alert("游戏结束")
+                                button.style.display="block";
+                            }
+                        }
+
+                    }
+                },40)
+
+
+                document.onkeydown=function(e){
+                    var keys = e.key
+                    for (var i = 0; i < objarr.length; i++) {
+
+                        if(keys==objarr[i].letter){
+                            var truenum = document.querySelector(".true span")
+                            var num = truenum.innerHTML;
+                            document.body.removeChild(objarr[i].ele)
+                            objarr.splice(i,1)
+                            objarr.push(create())
+                            num++
+                            truenum.innerHTML=num
+                        }
+                    }
+                }
+
+                button.style.display="none";
+            }
+
+        }
+    </script>
+</head>
+<body>
+<div class="true"><span>0</span></div>
+<div class="false"><span>10</span></div>
+<button>开始游戏</button>
+</body>
+</html>
