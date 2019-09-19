@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>键盘事件</title>
+
+    <script>
+        window.onload=function () {
+
+            var buts = document.querySelectorAll("input");
+            var fs = document.querySelector(".fs");
+            var lx = document.querySelector(".lx");
+
+
+            var body = document.querySelector(body)
+            var bj = document.querySelector(".beijing")
+            var rand = [], t,num1=0,num2=0
+
+            function move() {
+                var obj = {}
+                var zf = 'abcdefghijklmnopqrstuvwxyz'
+                var zimu = zf.charAt(Math.floor(Math.random() * zf.length))
+                var zimuweizhileft = 200 + Math.floor(1000 * Math.random())
+                var zimuweizhitop = 20 + Math.floor(Math.random() * 30)
+                var yanse = " rgb(" + Math.floor(255 * Math.random()) + "," + Math.floor(255 * Math.random()) + "," + Math.floor(255 * Math.random()) + ")"
+                var beijingyanse = " rgba(" + Math.floor(255 * Math.random()) + "," + Math.floor(255 * Math.random()) + "," + Math.floor(255 * Math.random()) + ",0.3)"
+                var zidaxiao = 20 + Math.floor(Math.random() * 30)
+                var speed = 20 + Math.floor(Math.random() * 5)
+                var div = document.createElement('div')
+
+                div.innerHTML = zimu
+                div.style.cssText = "font-size:" + zidaxiao + "px;color:" + yanse + ";left:" + zimuweizhileft + "px;top:" + zimuweizhitop + "px;position: absolute;" +
+                    " background:"+beijingyanse+" ;width:"+60+"px;height:"+60+"px;text-align: center;border-radius: "+30+"px;"
+                bj.appendChild(div)
+
+                obj.ele = div
+                obj.size = zidaxiao
+                obj.left = zimuweizhileft
+                obj.top = zimuweizhitop
+                obj.color = yanse
+                obj.speed = speed
+                obj.zf = zimu
+                return obj
+            }
+
+            for (var i = 0; i < 5; i++) {
+                rand.push(move())
+            }
+
+            function xl() {
+
+                for (let i = 0; i < rand.length; i++) {
+
+                    rand[i].ele.style.top = rand[i].ele.offsetTop + rand[i].speed + "px";
+                    if (rand[i].ele.offsetTop >= document.documentElement.clientHeight - 100) {
+                        num1++
+                        lx.innerHTML=num1
+                        bj.removeChild(rand[i].ele)
+                        rand.splice(i, 1)
+                        rand.push(move())
+                        if(num1>=3){
+
+
+                            alert("失败")
+                            clearInterval(t)
+
+                        }
+
+
+
+
+                    }
+                }
+            }
+
+
+
+            buts[0].onclick = function () {
+                t = setInterval(xl, 100)
+            }
+            buts[1].onclick = function () {
+
+            }
+            buts[2].onclick = function () {
+                t = setInterval(xl, 100)
+            }
+
+
+            document.onkeydown = function (e) {
+
+                for (let j = 0; j < rand.length; j++) {
+                    console.log(e.key, rand[j].zf)
+
+                    if (e.key == rand[j].zf) {
+                        bj.removeChild(rand[j].ele)
+                        rand.splice(j, 1)
+                        rand.push(move())
+                        num2++
+                        fs.innerHTML=num2;
+                    }
+                }
+
+            }
+
+
+
+
+        }
+
+    </script>
+
+    <style>
+        body{
+            padding:0;
+            margin:0;
+        }
+
+        .beijing{
+            width: 100%;height: 750px;
+            background: url("http://pic.58pic.com/58pic/11/67/86/60f58PIC834.jpg")no-repeat ;
+            background-size: 100%;
+
+
+        }
+        input{
+            width: 80px;
+            height: 30px;
+            border-radius: 5px;
+            background: lightgreen;
+        }
+        .fenshu{
+            width: 120px;
+            height: 60px;
+            border-radius: 5px;
+            float: right;
+        }
+        td{
+            width: 60px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="beijing">
+    <input type="button" value="开始">
+    <input type="button" value="暂停">
+    <input type="button" value="继续">
+    <div class="fenshu">
+        <table>
+            <tr>
+                <td>分数：</td><td><div class="fs"></div></td>
+            </tr>
+            <tr>
+                <td>掉落：</td><td><div class="lx"></div></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
