@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+
+        /*
+        1.如何动态的操作html元素
+         1.动态创建  document.createElement
+         2.删除 父元素.removeChild(子元素)
+         3.  clone 当前元素.cloneNode(true(
+         4. 动态插入
+         5. 替换 父元素.replaceChild(新的元素，要替换的元素)
+         6.获得父元素  子元素.parentNode
+
+          Math.floor 向下取整
+          Math.ceil 向上取整
+
+
+         */
+
+        window.onload=function () {
+            var start = document.querySelector(".start")
+            var timeout = document.querySelector(".timeout")
+            var goon = document.querySelector(".goon")
+
+            var arr = []
+            var zhongzi = ["a", "b", "c", "d", "e", "f", "j", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+            var t
+
+            function create() {
+                var obj = {}
+                var randLetter = zhongzi[Math.floor(Math.random() * zhongzi.length)]
+                var randSize = parseInt(30 + 20 * Math.random())
+                var randLeft = (document.documentElement.clientWidth - 100) * Math.random()
+                var randTop = parseInt(30 + 30 * Math.random())
+                var randColor = "rgb(" + parseInt(255 * Math.random()) + "," + parseInt(255 * Math.random()) + "," + parseInt(255 * Math.random()) + ")"
+                var randspeed = parseInt(2 + 5 * Math.random())
+                var div = document.createElement("div");
+                //div.style.cssText="position:absolute;left:"+randLeft+"px;top:"+randTop+"px;font-size:"+randSize+"px;color:"+randColor+";"
+                div.style.cssText = " width:50px;height:50px;position:absolute;left:" + randLeft + "px;top:" + randTop + "px;border-radius:50%;border:none;line-height: 50px;text-align: center;background:" + randColor + ";color:white"
+                div.innerHTML = randLetter
+
+                document.body.appendChild(div)
+
+
+                obj.Letter = randLetter
+                obj.ele = div
+                obj.size = randSize
+                obj.left = randLeft
+                obj.top = randTop
+                obj.color = randColor
+                obj.speed = randspeed
+
+                return obj;
+            }
+            function move() {
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].ele.style.top = arr[i].ele.offsetTop + arr[i].speed + "px"
+
+                    if (arr[i].ele.offsetTop > document.documentElement.clientHeight) {
+
+                        document.body.removeChild(arr[i].ele)
+                        arr.splice(i, 1)
+                        arr.push(create())
+                    }
+                }
+
+            }
+            function game(){
+
+
+
+               for (var i = 0; i < 5; i++) {
+                   arr.push(create())
+               }
+
+                t = setInterval(move ,40)
+               document.onkeydown = function (e) {
+
+                   var code = e.key;
+                   for (let i = 0; i < arr.length; i++) {
+                       console.log(arr[i].letter)
+                       if (arr[i].Letter == code) {
+                           document.body.removeChild(arr[i].ele)
+                           arr.splice(i,1)
+                           arr.push(create())
+                       }
+                   }
+
+               }
+
+
+
+           }
+
+
+            start.onclick = function () {
+                game()
+
+            }
+            timeout.onclick = function () {
+                clearInterval(t)
+            }
+
+            goon.onclick = function () {
+                t = setInterval(move ,40)
+            }
+
+        }
+
+
+
+    </script>
+    <style>
+        body{
+            width: 100%;height: 720px;
+            background: url("img/timg.jpg") no-repeat center;
+            background-size: 100% auto;
+            margin: 0;padding: 0;
+        }
+        .start{
+            width: 200px;height: 50px;
+            position: absolute;
+            left: 300px;bottom: 50px;
+
+        }
+        .timeout{
+            width: 200px;height: 50px;
+            position: absolute;
+            left: 650px;bottom: 50px;
+
+        }
+        .goon{
+            width: 200px;height: 50px;
+            position: absolute;
+            right: 280px;bottom: 50px;
+        }
+
+
+    </style>
+</head>
+<body>
+<input  class="start" type="button" value="开始">
+<input  class="timeout" type="button" value="暂停">
+<input  class="goon" type="button" value=继续>
+
+
+</body>
+</html>
