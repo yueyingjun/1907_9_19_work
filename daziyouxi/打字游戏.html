@@ -188,19 +188,20 @@
 
         // var t =setInterval(move,40)
         //计算得分
+            var count1 = 0
         var defen = document.querySelector(".defen")
         document.onkeydown=function (e) {
             var code = e.key
             for(var i=0;i<randArr.length;i++){
                 if(randArr[i].letter == code){
-                    count++
+                    count1++
                     document.body.removeChild(randArr[i].ele)
                     randArr.splice(i,1)
                     randArr.push(create())
-                    console.log(count)
+                    console.log(count1)
                 }
           }
-            defen.innerHTML = "分数："+count
+            defen.innerHTML = "分数："+count1
         }
         }
     </script>
