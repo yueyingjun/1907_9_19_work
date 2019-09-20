@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .box{
+        height: 500px;width: 800px;
+        border: 1px solid black;
+        background-color: #2b669a;
+        margin:auto;
+    }
+    .game{
+        float: left;
+        height: 500px;width: 500px;
+        background-color: black;
+        position: relative;
+        overflow: hidden;
+    }
+    .bt{
+        height: 100%;
+        width: 150px;
+        float: left;
+    }
+    .btr{
+        height: 100%;
+        width: 150px;
+        float: right;
+    }
+    .btr div:nth-child(1){
+        float: left;
+        height: 100px;
+        width: 150px;
+        background-color: red;
+    }
+    .btr div:nth-child(2){
+        float: left;
+        height: 100px;
+        width: 150px;
+        background-color: #ff4be3;
+    }
+    input{
+        height: 50px;width: 100%;
+    }
+    span{
+        float: left;
+    }
+    b{
+        float: left;
+        margin-top: 30px;
+        margin-left: 15px;
+
+    }
+</style>
+<script>
+
+  window.onload=function () {
+      var t
+      var tc
+      var k
+      var cb
+      var over
+
+      var b=document.querySelectorAll("b")
+      var span=document.querySelectorAll("span")
+      var arr=[]
+      var input = document.querySelectorAll("input")
+      var game = document.querySelector(".game")
+      var speed
+      var num1=0
+      var num2=100
+      b[0].innerHTML=num1
+      b[1].innerHTML=num2
+      var word = function () {
+          var num= Math.ceil(Math.random() * 25)
+          return String.fromCharCode(num+97)
+      }
+      function creatWord() {
+          //创造字母
+          var div=document.createElement("div")
+          div.style.cssText="width:50px;height:50px;text-align:center;line-height:50px;position:absolute;background:rgba(255,255,255,0.5)"
+          div.style.left=Math.random()*450+"px"
+          div.innerHTML=word()
+          arr.push(div)
+          game.appendChild(div)
+          console.log(arr)
+
+          //字母下滑
+              tc=setInterval(function () {
+              div.style.top=div.offsetTop+speed+"px"
+              if(div.offsetTop>=500){
+                  game.removeChild(div)
+                  arr.splice(0,1)
+                  num2-=50
+                  b[1].innerHTML=num2
+                  //游戏结束
+                  if(num2<=0){
+                      clearInterval(t)
+                      for(var i=0;i<arr.length;i++){
+                          game.removeChild(arr[i])
+                      }
+                      arr.length=0
+                      over=document.createElement("div")
+                      cb=document.createElement("input")
+                      over.style.cssText="width:300px;height:200px;background:white;position:absolute;left:50px;top100px;text-align:center;line-height:100px;z-index:3"
+                      over.innerHTML="GAME OVER"
+                      cb.type="button"
+                      cb.value="Play Again"
+                      over.appendChild(cb)
+                      game.appendChild(over)
+                      cb.onclick=function () {
+                          game.removeChild(over)
+                          num2=100
+                          num1=0
+                          b[0].innerHTML=num1
+                          b[1].innerHTML=num2
+
+                          var le=document.createElement("div")
+                          var level1=document.createElement("input")
+                          var level2=document.createElement("input")
+                          le.style.cssText="width:300px;height:200px;background:white;position:absolute;left:50px;top100px;text-align:center;line-height:100px;z-index:3"
+                          level1.type="button"
+                          level1.value="一般"
+                          level2.type="button"
+                          level2.value="困难"
+                          game.appendChild(le)
+                          le.appendChild(level1)
+                          le.appendChild(level2)
+                          level1.onclick=function () {
+                              game.removeChild(le)
+                              speed=40
+                              t=setInterval(creatWord,1000)
+                          }
+                          level2.onclick=function () {
+                              game.removeChild(le)
+                              speed=70
+                              t=setInterval(creatWord,1000)
+                          }
+
+                      }
+                  }
+              }
+
+          },1000)
+      }
+      input[0].onclick=function () {
+          var le=document.createElement("div")
+          var level1=document.createElement("input")
+          var level2=document.createElement("input")
+          le.style.cssText="width:300px;height:200px;background:white;position:absolute;left:50px;top100px;text-align:center;line-height:100px;z-index:3"
+          level1.type="button"
+          level1.value="一般"
+          level2.type="button"
+          level2.value="困难"
+          game.appendChild(le)
+          le.appendChild(level1)
+          le.appendChild(level2)
+          level1.onclick=function () {
+              game.removeChild(le)
+              speed=40
+              t=setInterval(creatWord,1000)
+          }
+          level2.onclick=function () {
+              game.removeChild(le)
+              speed=70
+              t=setInterval(creatWord,1000)
+          }
+      }
+
+      window.onkeydown=function (e) {
+          k=e.key
+          setInterval(function () {
+              for(var i=0;i<arr.length;i++){
+                  if(k==arr[i].innerHTML){
+                      game.removeChild(arr[i])
+                      arr.splice(i,1)
+                      num1++
+                      b[0].innerHTML=num1
+                  }
+
+              }
+          },500)
+      }
+
+  }
+</script>
+<body>
+<div class="box">
+    <div class="bt">
+        <input type="button" value="开始">
+        <input type="button" value="暂停(未实现)">
+    </div>
+    <div class="btr">
+       <div>
+           <span>已消灭</span>
+           <b></b>
+       </div>
+       <div>
+           <span>生命值</span>
+           <b></b>
+       </div>
+    </div>
+    <div class="game"></div>
+
+</div>
+</body>
+</html>
