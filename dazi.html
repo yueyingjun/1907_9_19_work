@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        window.onload=function () {
+            function create() {
+                var obj={}
+                var randLetter=String.fromCharCode(parseInt(Math.random()*26+97))
+                var randSize=parseInt(30+20*Math.random())
+                var randLeft=parseInt(Math.random()*(document.documentElement.clientWidth-50))
+                var randTop=parseInt(Math.random()*50)
+                var randColor="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")"
+                var randspeed=parseInt(Math.random()*5+2)
+                var element=document.createElement("div")
+                element.innerHTML=randLetter
+                element.style.cssText="position:absolute;left:"+randLeft+"px;top:"+randTop+"px;font-size:"+randSize+"px;color:"+randColor
+                document.body.appendChild(element)
+                obj.size=randSize
+                obj.left=randLeft
+                obj.top=randTop
+                obj.color=randColor
+                obj.letter=randLetter
+                obj.element=element
+                obj.speed=randspeed
+                return obj
+            }
+            var arr=[]
+            for (var i=0;i<5;i++){
+                arr.push(create())
+            }
+            setInterval(function () {
+                for (var i=0;i<5;i++){
+                    arr[i].element.style.top=(arr[i].element.offsetTop+arr[i].speed)+"px"
+                    if (arr[i].element.offsetTop>document.documentElement.clientHeight){
+                        document.body.removeChild(arr[i].element)
+                        arr.splice(i,1)
+                        arr.push(create())
+                    }
+                }
+            },50)
+            document.onkeydown=function (e) {
+                var k=e.key
+                for (var i=0;i<5;i++){
+                    if (arr[i].letter==k){
+                        document.body.removeChild(arr[i].element)
+                        arr.splice(i,1)
+                        arr.push(create())
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
