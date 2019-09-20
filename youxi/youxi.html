@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script>
+        window.onload =function () {
+
+            var  zhongzi=["a", "b","c","d","e","f","g","h","i","j","k"]
+
+                    function create() {
+                        var  obj ={}
+                        var ranZ = zhongzi[Math.floor(Math.random()*zhongzi.length)]
+                        var ranSize = parseInt(Math.random()*20+30)
+                        var ranLeft = parseInt(Math.random()*(document.documentElement.clientWidth-60))
+                        var  ranTop = parseInt(Math.random()*10+40)
+                        var ranColor = "rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")"
+
+
+                        var div = document.createElement("div")
+
+                        div.innerHTML=ranZ;
+
+                        div.style.cssText = "font-size;"+ranSize+"px;position:absolute;left:"+ranLeft+"px;top:"+ranTop+"px;color;"+ranColor+";background:url('img/1.jpg')no-repeat center ;width:50px;height:50px; background-size:100% auto;line-height:50px;text-align:center;"
+
+                        document.body.appendChild(div)
+
+                        var ranspeed = parseInt(Math.random()*5+1)
+
+                        obj.ele = div
+
+                        obj.nei = ranZ
+
+                        obj.left = ranLeft
+
+                        obj.size = ranSize
+
+                        obj.top = ranTop
+
+                        obj.color = ranColor
+
+                        obj.speed = ranspeed
+
+                        return obj
+            }
+                     var  element = []
+
+            for (var i = 0;i<5;i++){
+                element.push(create())
+            }
+
+            //让字母动起来
+            setInterval(function () {
+                for (var i=0;i<element.length;i++){
+                    element[i].ele.style.top = element[i].speed+element[i].ele.offsetTop+"px"
+                    if (element[i].ele.offsetTop>document.documentElement.clientHeight){
+                        document.body.removeChild(element[i].ele)
+                        element.splice(i,1)
+                        element.push(create())
+                    }
+                }
+
+            },40)
+
+            //键盘输入
+            document.onkeydown=function (e) {
+                for (let i =0 ;i<element.length;i++){
+                    if (element[i].nei ==e.key){
+                        document.body.removeChild(element[i].ele)
+                        element.splice(i,1)
+                        element.push(create())
+                    }
+
+
+                }
+                }
+        }
+
+    </script>
+    <style>
+body{
+    background: url("https://f11.baidu.com/it/u=2823417446,3545571241&fm=72") ;
+}
+    </style>
+</head>
+<body>
+</body>
+</html>
