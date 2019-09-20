@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0;margin: 0;
+        }
+        .kaishi{
+            width:280px;height: 75px;
+            margin: auto;
+            position: absolute;
+            left: 0;top: 0;right: 0;bottom: 0;
+            background-image: url("../img/ks.jpg");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-position-y: -83px;
+            border-radius: 50px;
+            z-index: 999;
+        }
+        .kaishi:hover{
+            box-shadow: 0 0 10px #3983e4;
+
+        }
+        .zanting{
+            width: 50px;height: 50px;
+            /*//background: url("../img/zt.jpg") no-repeat;*/
+            background: #01b5ff;
+            background-size: 100%;
+            position: absolute;
+            border-radius: 50%;
+            right: 150px;
+            top: 5px;
+            display: none;
+            text-align: center;
+            line-height: 50px;
+        }
+        .jixu{
+            width: 50px;height: 50px;
+            background: #01b5ff;
+          /*//  background: url("../img/jixu.jpg") no-repeat;*/
+            background-size: 100%;
+            position: absolute;
+            border-radius: 50%;
+            right: 80px;
+            top: 5px;
+            display: none;
+            text-align: center;
+            line-height: 50px;
+        }
+        .jieshu{
+            width: 50px;height: 50px;
+            background: url("../img/jieshu.jpg") no-repeat;
+            background-size: 100%;
+            position: absolute;
+            border-radius: 50%;
+            right: 10px;
+            top: 5px;
+            display: none;
+        }
+        .zanting:hover{
+            box-shadow: 0 0 10px red;
+        }
+        .jixu:hover{
+            box-shadow: 0 0 10px red;
+        }
+        .jieshu:hover{
+            box-shadow: 0 0 10px red;
+        }
+        .shengming{
+            width:50px;height: 50px;
+            left: 10px;
+            top: 5px;
+            overflow: hidden;
+            border-radius: 15px;
+            z-index: 100;
+        }
+        .shengming img{
+            width:50px;
+            height: 50px;
+            transform: scale(2.7);
+        }
+        .shengmingzhi{
+            width: 50px;height: 50px;
+            position: absolute;
+            left: 50px;
+            top: 0;
+            color: red;
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        .defen{
+            width: 200px;height: 50px;
+            position: absolute;
+            left: 500px;top: 0;
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+    </style>
+    <script>
+        window.onload=function () {
+            var zhongzi = ["a","b","c","d","e","f","j","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+            document.body.style.backgroundImage="url(../img/2.jpg)"
+            document.body.style.backgroundRepeat="no-repeat"
+            document.body.style.backgroundSize="100%"
+
+           function create() {
+               var obj = { }
+               var randLetter = zhongzi[Math.floor(Math.random()*zhongzi.length)]
+               var randSize = parseInt(30+20*Math.random())
+               var randLeft = (document.documentElement.clientWidth-110)*Math.random()
+               var randTop = parseInt(40+30*Math.random())
+               var randColor = "rgb("+parseInt(255*Math.random())+","+parseInt(255*Math.random())+","+parseInt(255*Math.random())+")"
+               var randspeed =parseInt(3+5*Math.random())
+
+               var div = document.createElement("div")
+               div.innerHTML =randLetter
+               div.style.cssText="width: 100px;height: 100px;box-sizing: border-box; padding-top:35px;text-align: center;background: url(../img/1.png) no-repeat;background-size: 100%;position:absolute;left:"+randLeft+"px;top:"+randTop+"px;font-size:"+randSize+"px;color:"+randColor+";"
+               document.body.appendChild(div)
+
+               obj.letter = randLetter
+               obj.ele =div
+               obj.size = randSize
+               obj.left = randLeft
+               obj.top = randTop
+               obj.color = randColor
+               obj.speed=randspeed
+               return obj;
+           }
+        var randArr = []
+        //下落元素个数
+        function num() {
+            for(var i=0;i<3;i++){
+                randArr.push(create())
+            }
+        }
+
+        var count = 0
+        //计算生命值
+        var shengmingzhi = document.querySelector(".shengmingzhi")
+        function move() {
+
+            for(var i=0;i<randArr.length;i++){
+                randArr[i].ele.style.top=randArr[i].ele.offsetTop+randArr[i].speed+"px"
+                if(randArr[i].ele.offsetTop>=(document.documentElement.clientHeight-randArr[i].ele.offsetHeight)){
+                    count++
+                    if(count<16){
+                        shengmingzhi.innerHTML = 15-count
+                    }else{
+                        if (confirm("游戏结束，是否重新开始")){
+                            // t = setInterval(move,40)
+                            // kaishi.style.display = "none"
+                            count = 0
+                            count1=0
+                        }else{
+                            document.body.style.display = "none"
+                        }
+                    }
+                    document.body.removeChild(randArr[i].ele)
+                    randArr.splice(i,1)
+                    // console.log(count)
+                    randArr.push(create())
+                    break
+                }
+            }
+
+        }
+
+        //计算生命值
+        //开始游戏
+            var kaishi = document.querySelector(".kaishi")
+            kaishi.onclick=function () {
+                t=setInterval(move,40)
+                kaishi.style.display="none"
+                jixu.style.display = "block"
+                zanting.style.display = "block"
+                jieshu.style.display = "block"
+                num()
+            }
+       // 结束游戏
+            var jieshu = document.querySelector(".jieshu")
+            jieshu.onclick = function(){
+                if (confirm("确认是否退出游戏")){
+                    document.body.style.display = "none"
+                }else{
+                    t = setInterval(move,40)
+                    kaishi.style.display = "none"
+                }
+            }
+        //暂停游戏
+            var zanting = document.querySelector(".zanting")
+            zanting.onclick = function(){
+            clearInterval(t)
+            }
+        //继续游戏
+            var jixu = document.querySelector(".jixu")
+            jixu.onclick = function(){
+            t=setInterval(move,40)
+            }
+
+        // var t =setInterval(move,40)
+        //计算得分
+            var count1 = 0
+        var defen = document.querySelector(".defen")
+        document.onkeydown=function (e) {
+            var code = e.key
+            for(var i=0;i<randArr.length;i++){
+                if(randArr[i].letter == code){
+                    count1++
+                    document.body.removeChild(randArr[i].ele)
+                    randArr.splice(i,1)
+                    randArr.push(create())
+                    console.log(count1)
+                }
+          }
+            defen.innerHTML = "分数："+count1
+        }
+        }
+    </script>
+</head>
+<body>
+<div class="kaishi"></div>
+<div class="zanting">|&nbsp|</div>
+<div class="jixu">go</div>
+<div class="jieshu"></div>
+<div class="shengming">
+    <img src="../img/shengming.jpg" alt="">
+</div>
+<div class="shengmingzhi"></div>
+<div class="defen"></div>
+</body>
+</html>
