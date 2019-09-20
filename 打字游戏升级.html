@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+       window.onload=function () {
+
+
+            var randz = ["a", "b", "c", "d", "f", "e", "m", "f", "g", "t", "h", "o", "p"];
+          function create() {
+               var obj = {}
+           var randzifu = randz[Math.floor(Math.random() * randz.length)]
+           var randsize = parseInt(30,20*Math.random())
+           var randspeed = parseInt(Math.random() * 5)+1
+           var randleft = Math.random() * (document.documentElement.clientWidth - 50)
+           var randtop = parseInt(30+30*Math.random())
+           var randcolor = "rgb(" + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + "," + parseInt(Math.random() * 255) + ")"
+           var div = document.createElement("div")
+             div.innerHTML=randzifu
+           div.style.cssText = "position:absolute;left:" + randleft +"px;top:" + randtop + "px;color:" + randcolor + ";font-size:" + randsize +";"
+           document.body.appendChild(div)
+           obj.ele = div
+           obj.zi = randzifu
+           obj.size = randsize
+           obj.speed = randspeed
+           obj.left = randleft
+           obj.top = randtop
+           obj.color = randcolor
+           return obj;
+          }
+
+          var temp=[]
+           for(var i=0;i<5;i++){
+               temp.push(create())
+           }
+           var  count2=document.createElement("div")
+         count2.innerHTML="丢失"+0+"分"
+           count2.style.cssText="background:red;position:absolute;right:0;top:0;width:100px;height:100px"
+           document.body.appendChild(count2)
+           var count3=0;
+           setInterval(function () {
+               for(var i=0;i<temp.length;i++) {
+                   temp[i].ele.style.top = temp[i].ele.offsetTop + temp[i].speed + "px"
+                   if (temp[i].ele.offsetTop > document.documentElement.clientHeight) {
+                       document.body.removeChild(temp[i].ele)
+                       temp.splice(i, 1)
+                       temp.push(create())
+                       count3++
+                       count2.innerHTML="丢失"+count3+"分"
+                       if(count3>10){
+                             alert("你输了")
+
+                       }
+                   }
+               }
+           },40)
+
+ var  count1=document.createElement("div")
+         count1.innerHTML="获得"+0+"分"
+           count1.style.cssText="background:yellow;position:absloute;left:0;top:0;width:100px;height:100px"
+           document.body.appendChild(count1)
+             var count=0;
+           document.onkeydown=function (e) {
+               var code=e.key;
+               for(var i=0;i<temp.length;i++){
+                   if(temp[i].zi==code){
+                       document.body.removeChild(temp[i].ele)
+                       temp.splice(i,1)
+                       temp.push(create())
+                       count++;
+                       count1.innerHTML="获得"+count+"分"
+                       if(count>10){
+                          alert("你赢了")
+                       }
+                   }
+               }
+
+           }
+
+       }
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
