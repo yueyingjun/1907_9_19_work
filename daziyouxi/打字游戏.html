@@ -28,23 +28,29 @@
         }
         .zanting{
             width: 50px;height: 50px;
-            background: url("../img/zt.jpg") no-repeat;
+            /*//background: url("../img/zt.jpg") no-repeat;*/
+            background: #01b5ff;
             background-size: 100%;
             position: absolute;
             border-radius: 50%;
             right: 150px;
             top: 5px;
             display: none;
+            text-align: center;
+            line-height: 50px;
         }
         .jixu{
             width: 50px;height: 50px;
-            background: url("../img/jixu.jpg") no-repeat;
+            background: #01b5ff;
+          /*//  background: url("../img/jixu.jpg") no-repeat;*/
             background-size: 100%;
             position: absolute;
             border-radius: 50%;
             right: 80px;
             top: 5px;
             display: none;
+            text-align: center;
+            line-height: 50px;
         }
         .jieshu{
             width: 50px;height: 50px;
@@ -129,31 +135,42 @@
                return obj;
            }
         var randArr = []
-
-        for(var i=0;i<3;i++){
-            randArr.push(create())
+        //下落元素个数
+        function num() {
+            for(var i=0;i<3;i++){
+                randArr.push(create())
+            }
         }
+
         var count = 0
         //计算生命值
         var shengmingzhi = document.querySelector(".shengmingzhi")
         function move() {
+
             for(var i=0;i<randArr.length;i++){
                 randArr[i].ele.style.top=randArr[i].ele.offsetTop+randArr[i].speed+"px"
                 if(randArr[i].ele.offsetTop>=(document.documentElement.clientHeight-randArr[i].ele.offsetHeight)){
+                    count++
+                    if(count<16){
+                        shengmingzhi.innerHTML = 15-count
+                    }else{
+                        if (confirm("游戏结束，是否重新开始")){
+                            // t = setInterval(move,40)
+                            // kaishi.style.display = "none"
+                            count = 0
+                            count1=0
+                        }else{
+                            document.body.style.display = "none"
+                        }
+                    }
                     document.body.removeChild(randArr[i].ele)
                     randArr.splice(i,1)
-                    count++
                     // console.log(count)
                     randArr.push(create())
                     break
                 }
+            }
 
-            }
-            if(count<16){
-                shengmingzhi.innerHTML = 15-count
-            }else{
-                alert("游戏结束")
-            }
         }
 
         //计算生命值
@@ -165,8 +182,9 @@
                 jixu.style.display = "block"
                 zanting.style.display = "block"
                 jieshu.style.display = "block"
+                num()
             }
-        //结束游戏
+       // 结束游戏
             var jieshu = document.querySelector(".jieshu")
             jieshu.onclick = function(){
                 if (confirm("确认是否退出游戏")){
@@ -209,8 +227,8 @@
 </head>
 <body>
 <div class="kaishi"></div>
-<div class="zanting"></div>
-<div class="jixu"></div>
+<div class="zanting">|&nbsp|</div>
+<div class="jixu">go</div>
 <div class="jieshu"></div>
 <div class="shengming">
     <img src="../img/shengming.jpg" alt="">
