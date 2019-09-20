@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script>
+        window.onload=function () {
+            var contain=["q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m",]
+            var cWidth=document.documentElement.clientWidth
+            var cHeight=document.documentElement.clientHeight
+            var countup=0
+            var countdown=0
+
+            function creat() {
+                var obj={}
+                var randNum=Math.floor(Math.random()*contain.length)
+                var randSize=parseInt(Math.random()*20+30)
+                var randColor="rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+");"
+                var randLeft=parseInt(Math.random()*cWidth-50)
+                var randTop=parseInt(Math.random()*30+20)
+                var randSpeed=parseInt(Math.random()*2+8)
+
+
+                var div=document.createElement("div")
+                div.innerHTML=contain[randNum]
+                div.style.cssText="position:absolute;left:"+randLeft+"px;top:"+randTop+"px;font-size:"+randSize+"px;color:"+randColor+";"
+                document.body.appendChild(div)
+
+                obj.ele=div
+                obj.size=randSize
+                obj.color=randColor
+                obj.left=randLeft
+                obj.top=randTop
+                obj.speed=randSpeed
+                obj.lett=contain[randNum]
+
+                return obj
+            }
+            var randRrray=[]
+            for (var i=0;i<5;i++) {
+                randRrray.push(creat())
+            }
+
+            var t=setInterval(function () {
+                for (let i=0;i<randRrray.length;i++){
+                    randRrray[i].ele.style.top=randRrray[i].ele.offsetTop+randRrray[i].speed+"px";
+
+                    if (randRrray[i].ele.offsetTop>cHeight-randRrray[i].size) {
+                        document.body.removeChild(randRrray[i].ele)
+                        randRrray.splice(i,1)
+                        randRrray.push(creat())
+                        countdown++
+                    }
+                    if (countdown>=5){
+                        clearInterval(t)
+                        for (var a=0;a<randRrray.length;a++){
+                            document.body.removeChild(randRrray[a].ele)
+                            randRrray.splice(a,1)
+                        }
+                        alert("您输了")
+                    }
+                    if (countup>=10) {
+                        clearInterval(t)
+                        alert("您赢了")
+                    }
+                }
+
+
+
+            },40)
+
+            onkeydown=function (e) {
+                console.log(e.key)
+                for (var i=0;i<randRrray.length;i++){
+                    if (randRrray[i].lett==e.key) {
+                        document.body.removeChild(randRrray[i].ele)
+                        randRrray.splice(i,1)
+                        randRrray.push(creat())
+                        countup++
+                    }
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
