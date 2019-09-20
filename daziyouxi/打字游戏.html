@@ -145,14 +145,15 @@
                     count++
                     // console.log(count)
                     randArr.push(create())
+                    break
                 }
-               if(count<=15){
-                   shengmingzhi.innerHTML = 15-count
-               }else{
-                   alert("游戏结束")
-               }
-            }
 
+            }
+            if(count<16){
+                shengmingzhi.innerHTML = 15-count
+            }else{
+                alert("游戏结束")
+            }
         }
 
         //计算生命值
