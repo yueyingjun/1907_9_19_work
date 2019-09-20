@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
+<script>
+window.onload=function(){
+    // alert(Math.random())
+    function create(){
+        var obj = {};
+        var letter = [];
+        for(var i=0;i<26;i++){
+            letter[i]=String.fromCharCode(65+i);
+        }
+        var rand_letter_num = Math.floor(Math.random()*25);
+        var rand_size = parseInt(Math.random()*50);
+        var rand_color = parseInt(Math.random()*255)+" "+parseInt(Math.random()*255)+" "+parseInt(Math.random()*255);
+        var rand_position = parseInt(Math.random()*500);
+        var rand_letter=""+letter[rand_letter_num]
+        var monster = document.createElement("div");
+        monster.style="width:"+(20+rand_size)+"px;height:"+(rand_size+20)+"px;top:"+rand_position
+                        +"px;right:0;position: absolute;font-size:"+(rand_size+20)
+                        +"px;color:rgb("+rand_color+");";
+                        
+        monster.innerHTML=rand_letter;
+        document.body.appendChild(monster);
+
+        obj.element=monster;
+        obj.letter=rand_letter;
+        obj.size=rand_size;
+        obj.color=rand_color;
+        obj.position=rand_position;
+
+        return obj;
+    }
+    // 创建个数
+
+    function createArr(){
+        var monster_num=1;
+        var monster_arr=[]
+        for(var i=0;i<monster_num;i++){
+            monster_arr[i]=create();
+        }
+        return monster_arr;
+    }
+    //动画
+    function action(monster_arr){
+        
+        for(let i=0;i<monster_arr.length;i++){ 
+            var moveLength=parseInt(getComputedStyle(monster_arr[i].element,null).right);  
+            var move_t=setInterval(function(){
+                if(moveLength<document.documentElement.clientWidth-100){
+                    moveLength+=3;
+                    monster_arr[i].element.style.right=moveLength+"px";
+                }
+                if(moveLength>=document.documentElement.clientWidth-100){                  
+                    document.body.removeChild(monster_arr[i].element);
+                    monster_arr.splice(i,1);
+                    // action(createArr());
+                    // clearInterval(move_t);
+                }
+                ifkeydown(monster_arr);
+                // action(createArr());
+            },50);
+        } 
+    }
+//   action(createArr());
+   // 移动
+    function move(){
+        var monster_all=[];
+        var move_view=setInterval(function(){  
+           var monster_arr = createArr();
+           monster_all=monster_all.concat(monster_arr);
+        //    console.log(monster_all)
+           action(monster_arr) ;
+           
+        ifkeydown(monster_all);
+       },1000);
+        
+    }
+  move();
+
+//按键
+    function ifkeydown(monster_arr){
+        document.onkeydown=function(e){
+            var scann =e.key;
+            console.log(scann);
+            for(var i=0;i<monster_arr.length;i++){
+                if(scann==monster_arr[i].letter){
+                    document.body.removeChild(monster_arr[i].element);
+                    monster_arr.splice(i,1);
+
+                    // var monster_arr=createArr();
+                }
+            }
+        }
+        // return monster_arr;
+    }
+ 
+
+
+   
+
+
+
+}
+</script>
